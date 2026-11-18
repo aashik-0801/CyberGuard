@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Something went wrong{% endblock %}
+{% block content %}
+<section class="error-page"><span class="error-mark">!</span><div class="eyebrow">REQUEST COULD NOT BE COMPLETED</div><h1>Let's try that again.</h1><p>{{ message }}</p><a class="button button-primary" href="{{ url_for('main.landing') }}">Return home <span>→</span></a></section>
+{% endblock %}

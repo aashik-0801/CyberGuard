@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="page-header"><div><div class="eyebrow">ACCOUNT SETTINGS</div><h1>Your profile</h1><p>Manage the details associated with your CyberGuard workspace.</p></div></div>
+<section class="profile-page-grid">
+    <article class="panel-card profile-edit-card">
+        <div class="panel-heading"><div><div class="summary-label">PROFILE DETAILS</div><h2>Personal information</h2></div><span class="avatar avatar-large">{{ current_user.username[0]|upper }}</span></div>
+        <form method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="form-field">{{ form.username.label }}{{ form.username(class_="form-control", autocomplete="username") }}{% for error in form.username.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+            <div class="form-field"><label for="profile-email">Email address</label><input id="profile-email" class="form-control" type="email" value="{{ current_user.email }}" readonly aria-describedby="email-note"><small id="email-note" class="field-hint">Your email is used to sign in and cannot be changed here.</small></div>
+            <button class="button button-primary" type="submit">Save changes <span>→</span></button>
+        </form>
+    </article>
+    <aside class="panel-card account-card"><div class="summary-label">ACCOUNT</div><h2>Workspace details</h2><div class="account-row"><span>Member since</span><strong>{{ current_user.created_at.strftime("%B %d, %Y") }}</strong></div><div class="account-row"><span>Product version</span><strong>CyberGuard 1.0.0</strong></div><div class="account-row"><span>Password storage</span><strong class="status-text"><i class="status-dot"></i> Hashed</strong></div><div class="account-logout"><form action="{{ url_for('auth.logout') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="button button-outline button-full" type="submit">Sign out <span>↗</span></button></form></div></aside>
+</section>
+{% endblock %}
