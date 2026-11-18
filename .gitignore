@@ -1,11 +1,23 @@
-.env
-.venv/
-venv/
+# Python
 __pycache__/
 *.py[cod]
 .pytest_cache/
-.coverage
-htmlcov/
-instance/*.db
-instance/*.sqlite
-instance/*.sqlite3
+.venv/
+venv/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Local databases and runtime files
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
