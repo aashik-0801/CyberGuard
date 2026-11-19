@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}URL safety analyzer{% endblock %}
+{% block content %}
+<div class="page-header"><div><div class="eyebrow">TRANSPARENT HEURISTIC ANALYSIS</div><h1>URL safety analyzer</h1><p>Review visible URL indicators without opening or fetching the submitted address.</p></div><span class="privacy-pill"><span class="status-dot"></span> NEVER VISITED</span></div>
+<section class="tool-layout">
+    <article class="panel-card tool-card" data-url-tool data-endpoint="{{ url_for('tools.url_analyzer') }}" data-report-endpoint="{{ url_for('reports.url_report') }}">
+        <div class="tool-card-heading"><span class="tool-large-icon cyan">↗</span><div><div class="summary-label">URL INDICATORS</div><h2>Inspect a URL</h2></div></div>
+        <form data-analysis-form>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-field"><label for="analysis-url">URL to analyze</label><input id="analysis-url" class="form-control" type="url" name="url" maxlength="2048" placeholder="https://example.com" autocomplete="url" required></div>
+            <small class="field-hint">Analysis is local parsing and heuristics only. CyberGuard does not resolve, visit, or download from submitted URLs.</small>
+            <div class="tool-actions"><button class="button button-primary" type="submit" data-submit-button>Analyze indicators <span>→</span></button></div>
+        </form>
+        <div class="tool-result" data-result hidden aria-live="polite">
+            <div class="result-row"><span>Heuristic risk indicator</span><strong data-risk-level></strong></div>
+            <div class="result-row"><span>Hostname</span><strong data-hostname></strong></div>
+            <ul class="indicator-list" data-indicators></ul>
+            <h3>Recommendations</h3><ul class="recommendation-list" data-recommendations></ul>
+            <p class="field-hint" data-disclaimer></p>
+            <div class="tool-actions"><button class="button button-outline" type="button" data-download-report>Download report</button><select class="form-control report-format" data-report-format aria-label="Report format"><option value="txt">Readable text</option><option value="csv">CSV</option></select></div>
+        </div>
+        <p class="tool-message" data-tool-message role="status"></p>
+    </article>
+    <aside class="tool-side-column"><article class="insight-card"><span class="insight-icon">✦</span><div class="summary-label">IMPORTANT LIMITATION</div><h2>No URL check can promise safety.</h2><p>Indicators and recommendations are heuristics, not a definitive phishing, malware, authenticity, or safety verdict.</p></article></aside>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/hash-tool.js') }}" defer></script>{% endblock %}

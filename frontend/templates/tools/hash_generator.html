@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}SHA-256 file hash{% endblock %}
+{% block content %}
+<div class="page-header"><div><div class="eyebrow">LOCAL FILE PROCESSING</div><h1>SHA-256 file hash</h1><p>Generate a SHA-256 fingerprint for a file without saving it to your account.</p></div><span class="privacy-pill"><span class="status-dot"></span> 16 MiB MAX</span></div>
+<section class="tool-layout">
+    <article class="panel-card tool-card" data-file-tool data-endpoint="{{ url_for('tools.hash_generator') }}" data-report-endpoint="{{ url_for('reports.hash_report') }}">
+        <div class="tool-card-heading"><span class="tool-large-icon cyan">#</span><div><div class="summary-label">SHA-256</div><h2>Generate a file hash</h2></div></div>
+        <form data-analysis-form>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-field"><label for="hash-file">Choose a file</label><input id="hash-file" class="form-control file-control" type="file" name="file" required></div>
+            <small class="field-hint">Maximum file size: 16 MiB. File content is processed in chunks and not saved.</small>
+            <div class="tool-actions"><button class="button button-primary" type="submit" data-submit-button>Generate SHA-256 <span>→</span></button></div>
+        </form>
+        <div class="tool-result" data-result hidden aria-live="polite">
+            <div class="result-row"><span>File</span><strong data-file-name></strong></div>
+            <div class="result-row"><span>Size</span><strong data-file-size></strong></div>
+            <div class="result-row"><span>SHA-256</span><code data-hash-value></code></div>
+            <div class="tool-actions"><button class="button button-outline" type="button" data-copy-value>Copy hash</button><button class="button button-outline" type="button" data-download-report>Download report</button><select class="form-control report-format" data-report-format aria-label="Report format"><option value="txt">Readable text</option><option value="csv">CSV</option></select></div>
+        </div>
+        <p class="tool-message" data-tool-message role="status"></p>
+    </article>
+    <aside class="tool-side-column"><article class="insight-card"><span class="insight-icon">✦</span><div class="summary-label">UNDERSTAND THE HASH</div><h2>A fingerprint, not a verdict.</h2><p>SHA-256 helps compare content. A hash alone does not establish who created a file or whether it is safe.</p></article><article class="panel-card privacy-card"><span class="privacy-shield">✓</span><div><strong>Not stored</strong><p>Uploads are read only for hashing. CyberGuard never executes uploaded files.</p></div></article></aside>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/hash-tool.js') }}" defer></script>{% endblock %}

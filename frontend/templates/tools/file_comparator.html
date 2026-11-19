@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}File comparator{% endblock %}
+{% block content %}
+<div class="page-header"><div><div class="eyebrow">CONTENT INTEGRITY CHECK</div><h1>File comparator</h1><p>Compare two files by their SHA-256 content hashes.</p></div><span class="privacy-pill"><span class="status-dot"></span> 16 MiB PER FILE</span></div>
+<section class="tool-layout">
+    <article class="panel-card tool-card" data-file-tool data-endpoint="{{ url_for('tools.file_comparator') }}" data-report-endpoint="{{ url_for('reports.comparison_report') }}" data-comparison>
+        <div class="tool-card-heading"><span class="tool-large-icon blue">⇄</span><div><div class="summary-label">SHA-256 COMPARISON</div><h2>Compare file content</h2></div></div>
+        <form data-analysis-form>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-field"><label for="original-file">Original file</label><input id="original-file" class="form-control file-control" type="file" name="original" required></div>
+            <div class="form-field"><label for="comparison-file">Comparison file</label><input id="comparison-file" class="form-control file-control" type="file" name="comparison" required></div>
+            <small class="field-hint">Each file is limited to 16 MiB. Files are processed in chunks, not saved, and never executed.</small>
+            <div class="tool-actions"><button class="button button-primary" type="submit" data-submit-button>Compare files <span>→</span></button></div>
+        </form>
+        <div class="tool-result" data-result hidden aria-live="polite">
+            <strong class="comparison-result" data-comparison-result></strong>
+            <div class="result-row"><span>Original</span><strong data-original-name></strong></div>
+            <div class="result-row"><span>Original SHA-256</span><code data-original-hash></code></div>
+            <div class="result-row"><span>Comparison</span><strong data-comparison-name></strong></div>
+            <div class="result-row"><span>Comparison SHA-256</span><code data-comparison-hash></code></div>
+            <p class="field-hint">Matching hashes indicate content equality for these files only. They do not prove authenticity or safety.</p>
+            <div class="tool-actions"><button class="button button-outline" type="button" data-download-report>Download report</button><select class="form-control report-format" data-report-format aria-label="Report format"><option value="txt">Readable text</option><option value="csv">CSV</option></select></div>
+        </div>
+        <p class="tool-message" data-tool-message role="status"></p>
+    </article>
+    <aside class="tool-side-column"><article class="insight-card"><span class="insight-icon">✦</span><div class="summary-label">INTERPRET WITH CARE</div><h2>Equal content does not prove a trusted source.</h2><p>A matching SHA-256 value establishes content equality for the compared files. It does not show file authenticity or safety.</p></article></aside>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/hash-tool.js') }}" defer></script>{% endblock %}

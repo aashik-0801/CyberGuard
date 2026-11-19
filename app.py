@@ -2,7 +2,7 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template, request
 from flask_wtf.csrf import CSRFError
 
 from backend.extensions import csrf, db, limiter, login_manager
@@ -29,9 +29,11 @@ def create_app(test_config: dict | None = None) -> Flask:
     login_manager.login_message_category = "error"
 
     from backend.routes.auth import auth_bp
+    from backend.routes.activity import activity_bp
     from backend.routes.dashboard import dashboard_bp
     from backend.routes.main import main_bp
     from backend.routes.profile import profile_bp
+    from backend.routes.reports import reports_bp
     from backend.routes.tools import tools_bp
 
     app.register_blueprint(main_bp)
@@ -39,6 +41,8 @@ def create_app(test_config: dict | None = None) -> Flask:
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(profile_bp)
     app.register_blueprint(tools_bp)
+    app.register_blueprint(activity_bp)
+    app.register_blueprint(reports_bp)
 
     @login_manager.user_loader
     def load_user(user_id: str) -> User | None:
@@ -62,16 +66,30 @@ def create_app(test_config: dict | None = None) -> Flask:
     @app.errorhandler(CSRFError)
     def handle_csrf_error(error):
         app.logger.warning("Rejected a request with an invalid or expired CSRF token.")
+        if request.path.startswith(("/tools/", "/reports/")):
+            return jsonify(error="Your session expired. Refresh the page and try again."), 400
         return render_template("error.html", message="Your session expired. Refresh the page and try again."), 400
 
     @app.errorhandler(429)
     def handle_rate_limit(error):
+        if request.path.startswith(("/tools/", "/reports/", "/activity/")):
+            return jsonify(error="Too many requests. Please wait a minute and try again."), 429
         return render_template("error.html", message="Too many sign-in attempts. Please wait a minute and try again."), 429
+
+    @app.errorhandler(413)
+    def handle_request_too_large(error):
+        app.logger.debug("Rejected request exceeding the configured upload limit: %s", error)
+        message = "Uploads must not exceed 16 MiB per file."
+        if request.path.startswith(("/tools/", "/reports/")):
+            return {"error": message}, 413
+        return render_template("error.html", message=message), 413
 
     @app.errorhandler(500)
     def handle_server_error(error):
         db.session.rollback()
         app.logger.exception("Unhandled application error", exc_info=error)
+        if request.path.startswith(("/tools/", "/reports/")):
+            return jsonify(error="Something went wrong. Please try again later."), 500
         return render_template("error.html", message="Something went wrong. Please try again later."), 500
 
     with app.app_context():
