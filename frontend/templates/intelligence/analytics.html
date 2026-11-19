@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Security analytics{% endblock %}
+{% block content %}
+<div class="page-header"><div><div class="eyebrow">DATABASE-DERIVED ANALYTICS</div><h1>Security analytics</h1><p>Charts use only recorded events belonging to this account.</p></div></div>
+<section class="panel-card filter-panel">
+    <form class="filter-form" method="get" action="{{ url_for('intelligence.analytics') }}">
+        <div class="form-field"><label for="analytics-from">From</label><input id="analytics-from" class="form-control" type="date" name="date_from" value="{{ filters.date_from }}"></div>
+        <div class="form-field"><label for="analytics-to">Through</label><input id="analytics-to" class="form-control" type="date" name="date_to" value="{{ filters.date_to }}"></div>
+        <button class="button button-primary" type="submit">Apply range <span>→</span></button>
+    </form>
+</section>
+<section class="analytics-grid">
+    <article class="panel-card chart-card"><div class="panel-heading"><div><div class="summary-label">LOGIN ACTIVITY</div><h2>Sign-in and sign-out events</h2></div></div><canvas id="login-chart" height="220"></canvas></article>
+    <article class="panel-card chart-card"><div class="panel-heading"><div><div class="summary-label">ACTIVITY DISTRIBUTION</div><h2>Recorded event types</h2></div></div><canvas id="distribution-chart" height="220"></canvas></article>
+    <article class="panel-card chart-card chart-wide"><div class="panel-heading"><div><div class="summary-label">SECURITY EVENT TRENDS</div><h2>Daily activity</h2></div></div><canvas id="trend-chart" height="260"></canvas></article>
+    <article class="panel-card chart-card"><div class="panel-heading"><div><div class="summary-label">TOOL USAGE</div><h2>Security tool activity</h2></div></div><canvas id="tool-chart" height="220"></canvas></article>
+</section>
+<div id="analytics-empty" class="empty-state" hidden><strong>No matching security activity</strong><p>No database events were found in this date range.</p></div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/intelligence.js') }}" defer></script>
+{% endblock %}

@@ -1,5 +1,34 @@
 # Changelog
 
+## 3.0.0 — Personal Security Intelligence
+
+### Added
+
+- Backend device information and timestamped collection status.
+- Read-only local network configuration views.
+- Recommendation engine with verified, evidence-based, and general classifications.
+- Database-derived security analytics and date-range filtering.
+- Downloadable HTML and CSV personal security intelligence reports.
+- Dashboard device, network, recommendation, and analytics links.
+
+### Changed
+
+- Updated application version indicators to 3.0.0.
+- Expanded navigation and dashboard while preserving V1/V2 tools and design.
+
+### Preserved
+
+- Existing V1 authentication/profile/password features and V2 toolkit/activity/report features.
+- Existing `users` and `activities` database records.
+
+### Deprecated
+
+- None.
+
+### Database
+
+- No schema changes or migration required. V3 reuses the existing `users` and `activities` tables.
+
 ## 2.0.0 — Advanced Security Toolkit
 
 ### Added

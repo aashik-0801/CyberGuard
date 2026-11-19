@@ -41,12 +41,18 @@ def create_app(test_config: dict | None = None) -> Flask:
     from backend.routes.auth import auth_bp
     from backend.routes.activity import activity_bp
     from backend.routes.dashboard import dashboard_bp
+    from backend.routes.device import device_bp
+    from backend.routes.intelligence import intelligence_bp
     from backend.routes.main import main_bp
+    from backend.routes.network import network_bp
     from backend.routes.profile import profile_bp
     from backend.routes.reports import reports_bp
     from backend.routes.tools import tools_bp
 
+    app.register_blueprint(device_bp)
+    app.register_blueprint(intelligence_bp)
     app.register_blueprint(main_bp)
+    app.register_blueprint(network_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(activity_bp)
     app.register_blueprint(dashboard_bp)

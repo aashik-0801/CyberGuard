@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Network information{% endblock %}
+{% block content %}
+<div class="page-header"><div><div class="eyebrow">LOCAL CONFIGURATION</div><h1>Network information</h1><p>Read-only local configuration facts from the machine running CyberGuard.</p></div><div class="privacy-pill"><span class="status-dot"></span> NO SCANNING</div></div>
+<section class="panel-card intel-panel">
+    <div class="panel-heading"><div><div class="summary-label">COLLECTION SCOPE</div><h2>Available local network configuration</h2></div><span class="subtle-count">{{ network.collected_at.strftime("%b %d, %Y · %H:%M:%S UTC") }}</span></div>
+    <p class="scope-notice">{{ network.limitation }}</p>
+    <div class="intel-grid">
+        <div><span>Local hostname</span><strong>{{ network.hostname }}</strong></div>
+        <div><span>Local IP address</span><strong>{{ network.local_ip }}</strong></div>
+        <div><span>Default gateway</span><strong>{{ network.default_gateway }}</strong></div>
+        <div><span>Connectivity status</span><strong>{{ network.connectivity_status }}</strong></div>
+    </div>
+    <div class="network-lists">
+        <div><h3>Network interfaces</h3>{% if network.interfaces %}<ul>{% for interface in network.interfaces %}<li>{{ interface }}</li>{% endfor %}</ul>{% else %}<p>Unavailable</p>{% endif %}</div>
+        <div><h3>DNS configuration</h3>{% if network.dns_servers %}<ul>{% for dns in network.dns_servers %}<li>{{ dns }}</li>{% endfor %}</ul>{% else %}<p>Unavailable</p>{% endif %}</div>
+    </div>
+</section>
+{% endblock %}

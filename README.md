@@ -1,8 +1,18 @@
-# CyberGuard 2.0.0 — Advanced Security Toolkit
+# CyberGuard 3.0.0 — Personal Security Intelligence
 
 CyberGuard is a personal cybersecurity platform with a private dashboard, account management, password tools, file integrity utilities, heuristic URL analysis, searchable activity, and downloadable reports.
 
-Version 2.0 extends the existing V1 Flask application while preserving its accounts, activity records, password tools, and visual design.
+Version 3.0 extends the existing V1 and V2 Flask application in place while preserving accounts, activity records, password tools, reports, and the established design system.
+
+## V3.0.0 Features
+
+- Backend device information dashboard with explicit collection scope and timestamps.
+- Read-only local network configuration display for hostname, local IP, interfaces, gateway, DNS, and connectivity limitations.
+- Unified user-scoped security event timeline with existing search, category, date filters, pagination, and CSV/text exports.
+- Transparent recommendation engine based on actual account events and clearly labeled general guidance.
+- Database-derived security analytics for login activity, tool usage, event distribution, daily totals, and event trends.
+- Downloadable HTML and CSV personal security reports containing collected facts, activity summaries, tool usage, and recommendations.
+- Expanded dashboard summaries for device facts, network facts, recent activity, tool usage, and recommendations.
 
 ## V2.0.0 Features
 
@@ -31,11 +41,17 @@ Matching SHA-256 file hashes establish content equality for the compared files, 
 
 Password strength is a heuristic, not a breach check or a guarantee of account safety.
 
-V2 does not add email verification, password reset, multi-factor authentication, breach lookup, or device scanning.
+Device information describes the Flask backend host, not necessarily the browser user's device.
+
+Network information is read-only local configuration. CyberGuard does not scan networks, scan ports, intercept packets, or inspect traffic content.
+
+Security recommendations are informational and do not constitute a complete security audit or vulnerability assessment.
+
+V3 does not add email verification, password reset, multi-factor authentication, breach lookup, or device vulnerability scanning.
 
 ## Data and Database Continuity
 
-V2 reuses the existing `users` and `activities` tables.
+V3 reuses the existing `users` and `activities` tables.
 
 No schema changes were needed for this release, so no migration is required.
 
@@ -128,7 +144,7 @@ Configure HTTPS and set `COOKIE_SECURE=true` when deploying outside local develo
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Run the complete test suite before releasing V2.0.0.
+Run the complete test suite before releasing V3.0.0.
 
 ## Security and Operations Notes
 
@@ -137,4 +153,6 @@ Run the complete test suite before releasing V2.0.0.
 - Generated passwords are not stored in activity descriptions.
 - Hashing and comparison read uploaded files in 1 MiB chunks.
 - Uploaded file contents are not permanently saved or executed.
-- URL analysis performs no network,
+- URL analysis performs no network requests, DNS lookups, or URL visits.
+- Device and network information is collected locally and displayed read-only.
+- Security reports are generated on demand and downloaded, not retained server-side.

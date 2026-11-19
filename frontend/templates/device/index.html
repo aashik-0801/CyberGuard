@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Device information{% endblock %}
+{% block content %}
+<div class="page-header"><div><div class="eyebrow">BACKEND DEVICE FACTS</div><h1>Device information</h1><p>Information is collected only when this page or an information report is requested.</p></div><div class="privacy-pill"><span class="status-dot"></span> READ-ONLY</div></div>
+<section class="panel-card intel-panel">
+    <div class="panel-heading"><div><div class="summary-label">COLLECTION SCOPE</div><h2>Machine running the Flask backend</h2></div><span class="subtle-count">{{ device.collected_at.strftime("%b %d, %Y · %H:%M:%S UTC") }}</span></div>
+    <p class="scope-notice">{{ device.limitation }}</p>
+    <div class="intel-grid">
+        <div><span>Operating system</span><strong>{{ device.operating_system }}</strong></div>
+        <div><span>OS version</span><strong>{{ device.os_version }}</strong></div>
+        <div><span>OS release</span><strong>{{ device.os_release }}</strong></div>
+        <div><span>Machine architecture</span><strong>{{ device.machine_architecture }}</strong></div>
+        <div><span>Processor</span><strong>{{ device.processor }}</strong></div>
+        <div><span>Python runtime</span><strong>{{ device.python_runtime }}</strong></div>
+        <div><span>Python implementation</span><strong>{{ device.python_implementation }}</strong></div>
+        <div><span>Hostname</span><strong>{{ device.hostname }}</strong></div>
+        <div><span>Application environment</span><strong>{{ device.application_environment }}</strong></div>
+    </div>
+</section>
+{% endblock %}

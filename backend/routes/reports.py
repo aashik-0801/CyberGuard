@@ -12,6 +12,13 @@ from backend.services.file_comparison_service import compare_streams
 from backend.services.hash_service import FileTooLargeError, hash_stream
 from backend.services.report_service import build_activity_report, build_report
 from backend.services.url_analysis_service import analyze_url
+from backend.services.device_service import collect_device_information
+from backend.services.network_service import collect_network_information
+from backend.services.recommendation_service import generate_recommendations
+from backend.services.security_report_service import (
+    build_security_report_csv,
+    build_security_report_html,
+)
 
 
 reports_bp = Blueprint("reports", __name__, url_prefix="/reports")
@@ -181,5 +188,48 @@ def activity_report(file_format: str):
         download_name=f"cyberguard-activity.{file_format}",
         max_age=0,
     )
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
+
+@reports_bp.get("/security/<file_format>")
+@login_required
+@limiter.limit("10 per minute")
+def security_report(file_format: str):
+    if file_format not in {"csv", "html"}:
+        abort(404)
+    device = collect_device_information()
+    network = collect_network_information()
+    recommendations = generate_recommendations(current_user.id)
+    if file_format == "csv":
+        content = build_security_report_csv(
+            current_user.id,
+            current_user.username,
+            device,
+            network,
+            recommendations,
+        )
+        response = send_file(
+            io.BytesIO(content),
+            mimetype="text/csv",
+            as_attachment=True,
+            download_name="cyberguard-security-report.csv",
+            max_age=0,
+        )
+    else:
+        content = build_security_report_html(
+            current_user.id,
+            current_user.username,
+            device,
+            network,
+            recommendations,
+        )
+        response = send_file(
+            io.BytesIO(content.encode("utf-8")),
+            mimetype="text/html",
+            as_attachment=True,
+            download_name="cyberguard-security-report.html",
+            max_age=0,
+        )
     response.headers["Cache-Control"] = "no-store"
     return response

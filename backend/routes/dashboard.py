@@ -8,6 +8,9 @@ from backend.services.analytics_service import (
     get_recent_analyses,
     get_usage_counts,
 )
+from backend.services.device_service import collect_device_information
+from backend.services.network_service import collect_network_information
+from backend.services.recommendation_service import generate_recommendations
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
@@ -23,10 +26,16 @@ def index():
     ).all()
 
     recent_analyses = get_recent_analyses(current_user.id)
+    device_info = collect_device_information()
+    network_info = collect_network_information()
+    recommendations = generate_recommendations(current_user.id)
 
     return render_template(
         "dashboard/index.html",
         recent_activity=recent_activity,
         recent_analyses=recent_analyses,
         usage_counts=get_usage_counts(current_user.id),
+        device_info=device_info,
+        network_info=network_info,
+        recommendations=recommendations[:3],
     )

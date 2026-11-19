@@ -1,5 +1,34 @@
 # CyberGuard Release Notes
 
+## 3.0.0 — Personal Security Intelligence
+
+V3.0 extends the existing V1 and V2 application in place. It adds defensive, local, read-only information dashboards and reporting without replacing the existing accounts, activity table, tools, or visual design.
+
+### Highlights
+
+- Device information is collected from the machine running the Flask backend, not inferred to be the browser user's device.
+- Network information is local and read-only. CyberGuard does not scan networks, scan ports, access other devices, intercept packets, or inspect traffic content.
+- Security activity remains user-scoped and supports search, category/date filters, pagination, and existing exports.
+- Recommendations distinguish account findings, evidence-based recommendations, general advice, and configuration guidance.
+- Analytics are generated from actual database activity records, with date-range filtering and explicit empty states.
+- HTML and CSV security reports include generation date, application version, available device/network facts, activity summary, tool usage, and recommendations.
+
+### Security and compatibility
+
+- Existing accounts and activity records remain unchanged.
+- No database schema change or migration is required for V3.
+- Device and network values are displayed as unavailable when collection APIs do not provide them.
+- Reports contain no passwords or uploaded file contents.
+- Authentication, CSRF protection, rate limits, secure session defaults, and per-user data access remain enabled.
+
+### Limitations
+
+- CyberGuard does not perform a complete security audit or vulnerability assessment.
+- Device details describe the Flask backend host.
+- Network connectivity is not claimed to be externally tested.
+- Missing operating-system or network values are not invented.
+- Recommendations are informational unless a rule explicitly identifies a recorded application event.
+
 ## 2.0.0 — Advanced Security Toolkit
 
 V2.0 extends the existing V1 application in place. Existing account and activity database records are retained; no database schema changes or migrations are required for this release.

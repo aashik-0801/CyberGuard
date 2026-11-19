@@ -5,7 +5,7 @@ from backend.services.hash_service import MAX_UPLOAD_BYTES
 
 
 class Config:
-    APP_VERSION = "2.0.0"
+    APP_VERSION = "3.0.0"
     SECRET_KEY = os.getenv("SECRET_KEY")
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///cyberguard.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False

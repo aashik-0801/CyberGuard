@@ -19,7 +19,7 @@ def test_dashboard_shows_profile_and_version(client, create_user):
     assert response.status_code == 200
     assert b"Welcome back, TestUser." in response.data
     assert b"CyberGuard" in response.data
-    assert b"v2.0.0" in response.data
+    assert b"v3.0.0" in response.data
     assert b"Workspace created" in response.data
 
 

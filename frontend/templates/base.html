@@ -35,6 +35,10 @@
                 <a class="nav-link {% if request.endpoint == 'tools.file_comparator' %}active{% endif %}" href="{{ url_for('tools.file_comparator') }}"><span class="nav-icon">⇄</span>File comparator</a>
                 <a class="nav-link {% if request.endpoint == 'tools.url_analyzer' %}active{% endif %}" href="{{ url_for('tools.url_analyzer') }}"><span class="nav-icon">↗</span>URL analyzer</a>
                 <a class="nav-link {% if request.endpoint == 'activity.index' %}active{% endif %}" href="{{ url_for('activity.index') }}"><span class="nav-icon">◷</span>Activity center</a>
+                <a class="nav-link {% if request.endpoint == 'device.index' %}active{% endif %}" href="{{ url_for('device.index') }}"><span class="nav-icon">▣</span>Device information</a>
+                <a class="nav-link {% if request.endpoint == 'network.index' %}active{% endif %}" href="{{ url_for('network.index') }}"><span class="nav-icon">≋</span>Network information</a>
+                <a class="nav-link {% if request.endpoint == 'intelligence.analytics' %}active{% endif %}" href="{{ url_for('intelligence.analytics') }}"><span class="nav-icon">⌁</span>Security analytics</a>
+                <a class="nav-link {% if request.endpoint == 'intelligence.recommendations' %}active{% endif %}" href="{{ url_for('intelligence.recommendations') }}"><span class="nav-icon">✦</span>Recommendations</a>
                 <a class="nav-link {% if request.endpoint == 'reports.index' %}active{% endif %}" href="{{ url_for('reports.index') }}"><span class="nav-icon">⇩</span>Report center</a>
                 <a class="nav-link {% if request.endpoint == 'profile.index' %}active{% endif %}" href="{{ url_for('profile.index') }}"><span class="nav-icon">◎</span>Profile</a>
             </nav>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Security recommendations{% endblock %}
+{% block content %}
+<div class="page-header"><div><div class="eyebrow">TRANSPARENT RULES</div><h1>Security recommendations</h1><p>These recommendations come from actual application events or general security guidance.</p></div></div>
+<section class="recommendation-list">
+    {% for item in recommendations %}
+    <article class="panel-card recommendation-card">
+        <div class="recommendation-heading"><span class="recommendation-severity">{{ item.severity }}</span><span class="recommendation-class">{{ item.classification }}</span></div>
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.reason }}</p>
+    </article>
+    {% endfor %}
+</section>
+<p class="field-hint">Informational recommendations are not verified vulnerabilities. CyberGuard does not claim to perform a complete security audit.</p>
+{% endblock %}
