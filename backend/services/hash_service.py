@@ -10,12 +10,21 @@ class FileTooLargeError(ValueError):
     pass
 
 
-def hash_stream(stream: BinaryIO, max_bytes: int = MAX_UPLOAD_BYTES) -> tuple[str, int]:
+def hash_stream(
+    stream: BinaryIO,
+    max_bytes: int = MAX_UPLOAD_BYTES,
+    chunk_size: int = CHUNK_SIZE,
+) -> tuple[str, int]:
+    if max_bytes < 0:
+        raise ValueError("The maximum file size cannot be negative.")
+    if chunk_size < 1:
+        raise ValueError("The hash chunk size must be positive.")
+
     digest = hashlib.sha256()
     size = 0
 
     while True:
-        chunk = stream.read(CHUNK_SIZE)
+        chunk = stream.read(chunk_size)
         if not chunk:
             break
         size += len(chunk)

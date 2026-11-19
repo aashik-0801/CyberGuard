@@ -15,10 +15,12 @@ def compare_streams(
     else:
         original_hash, original_size = hash_stream(original, max_bytes)
         comparison_hash, comparison_size = hash_stream(comparison, max_bytes)
+    matches = hmac.compare_digest(original_hash, comparison_hash)
     return {
         "original_hash": original_hash,
         "original_size": original_size,
         "comparison_hash": comparison_hash,
         "comparison_size": comparison_size,
-        "match": hmac.compare_digest(original_hash, comparison_hash),
+        "match": matches,
+        "matches": matches,
     }

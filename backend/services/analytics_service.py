@@ -25,3 +25,19 @@ def get_usage_counts(user_id: int) -> dict[str, int]:
         ).all()
     )
     return {label: counts.get(activity_type, 0) for label, activity_type in ACTIVITY_COUNTS.items()}
+
+
+def get_recent_analyses(user_id: int, limit: int = 5) -> list[Activity]:
+    if limit < 1:
+        raise ValueError("The recent-analysis limit must be positive.")
+    return db.session.scalars(
+        select(Activity)
+        .where(
+            Activity.user_id == user_id,
+            Activity.activity_type.in_(
+                ("file_hashed", "files_compared", "url_analyzed")
+            ),
+        )
+        .order_by(Activity.timestamp.desc(), Activity.id.desc())
+        .limit(limit)
+    ).all()

@@ -4,7 +4,10 @@ from sqlalchemy import select
 
 from backend.extensions import db
 from backend.models import Activity
-from backend.services.analytics_service import get_usage_counts
+from backend.services.analytics_service import (
+    get_recent_analyses,
+    get_usage_counts,
+)
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
@@ -18,15 +21,9 @@ def index():
         .order_by(Activity.timestamp.desc())
         .limit(6)
     ).all()
-    recent_analyses = db.session.scalars(
-        select(Activity)
-        .where(
-            Activity.user_id == current_user.id,
-            Activity.activity_type.in_(("file_hashed", "files_compared", "url_analyzed")),
-        )
-        .order_by(Activity.timestamp.desc(), Activity.id.desc())
-        .limit(5)
-    ).all()
+
+    recent_analyses = get_recent_analyses(current_user.id)
+
     return render_template(
         "dashboard/index.html",
         recent_activity=recent_activity,
